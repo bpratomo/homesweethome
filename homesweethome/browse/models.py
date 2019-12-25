@@ -18,6 +18,7 @@ class Home(models.Model):
     tenant_contact_information = models.TextField(default='')
     property_website_source = models.TextField(default='')
     property_source_url = models.TextField(default='')
+    region = models.TextField(default='')
     
 class Screenshot(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE)

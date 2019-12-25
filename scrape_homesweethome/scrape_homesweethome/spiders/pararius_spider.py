@@ -27,3 +27,22 @@ class ParariusSpider(scrapy.Spider):
 
     def parse_property(self,response):
         print("parse_property function triggered")
+
+        p = dm.HomeItem()
+        p['id_from_website']            = response.url
+        p['property_name']              = TBD
+        p['address']                    = TBD
+        p['price']                      = TBD
+        p['including_utilies']          = TBD
+        p['area']                       = TBD
+        p['number_of_bedrooms']         = TBD
+        p['state_of_furnishing']        = TBD
+        p['available_from']             = TBD
+        p['offered_since']              = TBD
+        p['energy_label']               = TBD
+        p['description_from_tenant']    = TBD
+        p['tenant_contact_information'] = TBD
+        p['property_website_source']    = TBD
+        p['property_source_url']        = TBD
+
+
