@@ -1,3 +1,31 @@
 from django.db import models
 
 # Create your models here.
+
+class Home(models.Model):
+    id_from_website = models.TextField()
+    property_name = models.TextField()
+    address = models.TextField()
+    price = models.FloatField()
+    including_utilies = models.BooleanField()
+    area = models.FloatField()
+    number_of_bedrooms = models.IntegerField()
+    state_of_furnishing = models.TextField()
+    available_from = models.TextField()
+    offered_since = models.TextField()
+    energy_label = models.TextField()
+    description_from_tenant = models.TextField()
+    
+class Screenshot(models.Model):
+    home = models.ForeignKey(Home, on_delete=models.CASCADE)
+    link = models.TextField()
+
+class Distance(models.Model):
+    home = models.ForeignKey(Home, on_delete=models.CASCADE)
+    category = models.TextField()
+    distance_item_name = models.TextField()
+    distance_in_meters = models.FloatField()
+
+
+
+
