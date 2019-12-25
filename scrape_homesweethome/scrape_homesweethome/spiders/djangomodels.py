@@ -1,4 +1,6 @@
-from scrapy.contrib.djangoitem import DjangoItem
+from scrapy_djangoitem import DjangoItem
+from browse.models import Home, Screenshot, Distance
+
 
 
 class HomeItem(DjangoItem):

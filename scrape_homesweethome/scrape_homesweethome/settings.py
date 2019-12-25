@@ -20,6 +20,9 @@ sys.path.append('/home/budi/Documents/Projects/homesweethome/homesweethome')
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'homesweethome.settings'
 
+import django
+django.setup()
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scrape_homesweethome (+http://www.yourdomain.com)'
 
