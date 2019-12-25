@@ -15,6 +15,9 @@ class Home(models.Model):
     offered_since = models.TextField()
     energy_label = models.TextField()
     description_from_tenant = models.TextField()
+    tenant_contact_information = models.TextField(default='')
+    property_website_source = models.TextField(default='')
+    property_source_url = models.TextField(default='')
     
 class Screenshot(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE)
