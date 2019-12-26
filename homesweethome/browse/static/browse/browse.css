@@ -1,0 +1,18 @@
+.top-wrap-height {
+    height: 60vh;
+    min-height: 460px;
+    transition: height 0.25s;
+}
+
+.top-container {
+    z-index: 2;
+}
+
+.bg-image {
+
+  
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+  
+  }

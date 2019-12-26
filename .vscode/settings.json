@@ -1,3 +1,11 @@
 {
-    "python.pythonPath": "venv/bin/python3"
+  "python.pythonPath": "venv/bin/python3",
+  "files.exclude": {
+    "node_modules": true,
+    "package.json": true,
+    "yarn.lock": true,
+    ".vscode": true,
+    "**/__pycache__": true,
+    "**/__pycache__.*": true
+  }
 }
