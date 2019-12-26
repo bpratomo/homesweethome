@@ -37,10 +37,10 @@ class ParariusSpider(scrapy.Spider):
 
     def parse(self, response):
         # #Follow links to each specific house
-        # for href in response.xpath("//div[@class='details']/h2/a/@href"):
-        #     time.sleep(3)
-        #     print('traversing to house {}'.format(href))
-        #     yield response.follow(href, self.parse_property)
+        for href in response.xpath("//div[@class='details']/h2/a/@href"):
+            time.sleep(3)
+            print('traversing to house {}'.format(href))
+            yield response.follow(href, self.parse_property)
 
         # Follow links to next page (maximum 5 pages)
         for href in response.xpath("//li[@class='next']/a/@href"):
@@ -79,6 +79,24 @@ class ParariusSpider(scrapy.Spider):
         p['tenant_contact_information'] = str(response.xpath("//a[contains(@class, 'telephone')]/@data-telephone").get())
         p['property_website_source']    = 'Pararius'
         p['property_source_url']        = response.url
-        p.save()
+        homerecord = p.save()
+
+        # Save screenshot links
+        # first screenshot
+        link_to_active_screenshot = response.xpath('//ul[@id="photos"]/li/img/@src').get()
+        s = ScreenshotItem(link=link_to_active_screenshot, 
+                            home = homerecord
+                            )
+        s.save()
+                                
+        
+        # The rest of the screenshot
+        list_of_inactive_screenshot = response.xpath('//ul[@id="photos"]/li/img/@data-src').getall()
+        for link in list_of_inactive_screenshot:
+            s = ScreenshotItem(link=link, 
+                    home = homerecord
+                    )
+            s.save()
+    
 
 
