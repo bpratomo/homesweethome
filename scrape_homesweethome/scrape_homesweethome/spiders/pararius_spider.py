@@ -97,6 +97,8 @@ class ParariusSpider(scrapy.Spider):
                     home = homerecord
                     )
             s.save()
+
+
     
 
 
