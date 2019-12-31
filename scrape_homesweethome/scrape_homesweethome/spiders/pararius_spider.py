@@ -42,17 +42,20 @@ class ParariusSpider(scrapy.Spider):
             print('traversing to house {}'.format(href))
             yield response.follow(href, self.parse_property)
 
-        # Follow links to next page (maximum 5 pages)
-        for href in response.xpath("//li[@class='next']/a/@href"):
-            page_number = href.get().split('-')[-1]
-            if page_number == '6': # maximum page number
-                break
-            else:
-                time.sleep(3)
-                print('traversing to next page {}'.format(href))
-                yield response.follow(href, self.parse)
+        # # Follow links to next page (maximum 5 pages)
+        # for href in response.xpath("//li[@class='next']/a/@href"):
+        #     page_number = href.get().split('-')[-1]
+        #     if page_number == '6': # maximum page number
+        #         break
+        #     else:
+        #         time.sleep(3)
+        #         print('traversing to next page {}'.format(href))
+        #         yield response.follow(href, self.parse)
 
 
+
+
+        
     def parse_property(self,response):
         print("parse_property function triggered")
 
@@ -97,6 +100,29 @@ class ParariusSpider(scrapy.Spider):
                     home = homerecord
                     )
             s.save()
+
+        # Save distances 
+        for href in response.xpath("//iframe[@class='listing-points-of-interest']/@src").getall():
+            yield scrapy.Request(href, callback=self.parse_distances, meta={'homerecord': 'homerecord'})
+
+
+    def parse_distances(self,response):
+        print('parsing distance function activated')
+        print(response.meta['homerecord'])
+
+        # Transit distances
+        category = 'transit'
+        base_xpath_selector = '//ul[contains(@class, "points-of-interest__list--transit")]/li/ul/li[@class="points-of-interest__poi"]'
+        list_of_transits_labels = response.xpath(base_xpath_selector+'/span[@class="points-of-interest__label"]/text()').getall()
+        list_of_transits_distances = response.xpath(base_xpath_selector+'/span[@class="points-of-interest__distance"]/text()').getall()
+
+        for i in range(len(list_of_transits_labels)):
+            print(list_of_transits_labels[i]+list_of_transits_distances[i])
+
+        # Education distances
+
+
+        # Grocery distances
 
 
     
