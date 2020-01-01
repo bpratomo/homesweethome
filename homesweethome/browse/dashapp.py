@@ -4,121 +4,92 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from django_plotly_dash import DjangoDash
 import json
+from sqlalchemy import create_engine
+import pandas as pd 
+import plotly.express as px
+# Create sqlalchemy connection 
+engine = create_engine('postgresql://postgres:Teknikfisika123@localhost/homesweethome')
 
-#region ExampleApp
-app = DjangoDash('SimpleExample')
+df = pd.read_sql('browse_home',engine)
+all_columns = list(df.columns.values.tolist())
+all_columns.remove('id_from_website')
+all_columns.remove('id')
+print(all_columns)
+long_df = pd.melt(df,'id',all_columns)
 
-styles = {
-    'pre': {
-        'border': 'thin lightgrey solid',
-        'overflowX': 'scroll'
-    }
-}
+
+#region dashapp
+app = DjangoDash('housingPlot')
+
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+
+
+available_indicators = long_df['variable'].unique()
 
 app.layout = html.Div([
-    dcc.Graph(
-        id='basic-interactions',
-        figure={
-            'data': [
-                {
-                    'x': [1, 2, 3, 4],
-                    'y': [4, 1, 3, 5],
-                    'text': ['a', 'b', 'c', 'd'],
-                    'customdata': ['c.a', 'c.b', 'c.c', 'c.d'],
-                    'name': 'Trace 1',
-                    'mode': 'markers',
-                    'marker': {'size': 12}
-                },
-                {
-                    'x': [1, 2, 3, 4],
-                    'y': [9, 4, 1, 4],
-                    'text': ['w', 'x', 'y', 'z'],
-                    'customdata': ['c.w', 'c.x', 'c.y', 'c.z'],
-                    'name': 'Trace 2',
-                    'mode': 'markers',
-                    'marker': {'size': 12}
-                }
-            ],
-            'layout': {
-                'clickmode': 'event+select'
-            }
-        }
-    ),
-
-    html.Div(className='row', children=[
-        html.Div([
-            dcc.Markdown(d("""
-                **Hover Data**
-
-                Mouse over values in the graph.
-            """)),
-            html.Pre(id='hover-data', style=styles['pre'])
-        ], className='three columns'),
+    html.Div([
 
         html.Div([
-            dcc.Markdown(d("""
-                **Click Data**
-
-                Click on points in the graph.
-            """)),
-            html.Pre(id='click-data', style=styles['pre']),
-        ], className='three columns'),
-
-        html.Div([
-            dcc.Markdown(d("""
-                **Selection Data**
-
-                Choose the lasso or rectangle tool in the graph's menu
-                bar and then select points in the graph.
-
-                Note that if `layout.clickmode = 'event+select'`, selection data also 
-                accumulates (or un-accumulates) selected data if you hold down the shift
-                button while clicking.
-            """)),
-            html.Pre(id='selected-data', style=styles['pre']),
-        ], className='three columns'),
+            dcc.Dropdown(
+                id='crossfilter-xaxis-column',
+                options=[{'label': i, 'value': i} for i in available_indicators],
+                value='price'
+            ),
+        ],
+        style={'width': '30%', 'display': 'inline-block'}),
 
         html.Div([
-            dcc.Markdown(d("""
-                **Zoom and Relayout Data**
+            dcc.Dropdown(
+                id='crossfilter-yaxis-column',
+                options=[{'label': i, 'value': i} for i in available_indicators],
+                value='area'
+            ),
+        ], style={'width': '30%', 'display': 'inline-block'}),
 
-                Click and drag on the graph to zoom or click on the zoom
-                buttons in the graph's menu bar.
-                Clicking on legend items will also fire
-                this event.
-            """)),
-            html.Pre(id='relayout-data', style=styles['pre']),
-        ], className='three columns')
-    ])
+
+        html.Div([
+            dcc.Dropdown(
+                id='crossfilter-color-by',
+                options=[{'label': i, 'value': i} for i in available_indicators],
+                value='region'
+            ),
+        ],
+        style={'width': '30%', 'display': 'inline-block'}),
+
+    ], style={
+        'borderBottom': 'thin lightgrey solid',
+        'backgroundColor': 'rgb(250, 250, 250)',
+        'padding': '10px 5px'
+    }),
+
+    html.Div([
+        dcc.Graph(
+            id='crossfilter-indicator-scatter',
+        )
+    ], style={'width': '98%','height':'200%', 'display': 'inline-block', 'padding': '0 20'}),
+
 ])
 
 
 @app.callback(
-    Output('hover-data', 'children'),
-    [Input('basic-interactions', 'hoverData')])
-def display_hover_data(hoverData):
-    return json.dumps(hoverData, indent=2)
+    dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
+    [dash.dependencies.Input('crossfilter-xaxis-column', 'value'),
+     dash.dependencies.Input('crossfilter-yaxis-column', 'value'),
+     dash.dependencies.Input('crossfilter-color-by', 'value'),
+     ])
+def update_graph(xaxis_column_name, yaxis_column_name,color_by
+                 ):
 
 
-@app.callback(
-    Output('click-data', 'children'),
-    [Input('basic-interactions', 'clickData')])
-def display_click_data(clickData):
-    return json.dumps(clickData, indent=2)
+    return px.scatter(df,
+                      x=df[xaxis_column_name],
+                      y = df[yaxis_column_name],
+                      color=df[color_by],
+                      size = [100 for i in range(len(df))],
+                      height=800)
+    
 
 
-@app.callback(
-    Output('selected-data', 'children'),
-    [Input('basic-interactions', 'selectedData')])
-def display_selected_data(selectedData):
-    return json.dumps(selectedData, indent=2)
-
-
-@app.callback(
-    Output('relayout-data', 'children'),
-    [Input('basic-interactions', 'relayoutData')])
-def display_relayout_data(relayoutData):
-    return json.dumps(relayoutData, indent=2)
 #endregion 
-
-#region First 
