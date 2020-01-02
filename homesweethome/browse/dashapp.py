@@ -7,6 +7,7 @@ import json
 from sqlalchemy import create_engine
 import pandas as pd 
 import plotly.express as px
+from textwrap import dedent as d
 
 
 # Create sqlalchemy connection 
@@ -25,7 +26,12 @@ app = DjangoDash('housingPlot')
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
+styles = {
+    'pre': {
+        'border': 'thin lightgrey solid',
+        'overflowX': 'scroll'
+    }
+}
 
 
 available_indicators = long_df['variable'].unique()
@@ -72,7 +78,18 @@ app.layout = html.Div([
         )
     ], style={'width': '98%','height':'200%', 'display': 'inline-block', 'padding': '0 20'}),
 
-])
+    html.Div([
+            dcc.Markdown(d("""
+                **Zoom and Relayout Data**
+
+                Click and drag on the graph to zoom or click on the zoom
+                buttons in the graph's menu bar.
+                Clicking on legend items will also fire
+                this event.
+            """)),
+            html.Pre(id='relayout-data', style=styles['pre']),
+        ], className='three columns')
+    ])
 
 
 @app.callback(
@@ -83,15 +100,46 @@ app.layout = html.Div([
      ])
 def update_graph(xaxis_column_name, yaxis_column_name,color_by
                  ):
-
-
     return px.scatter(df,
                       x=df[xaxis_column_name],
                       y = df[yaxis_column_name],
                       color=df[color_by],
                       size = [100 for i in range(len(df))],
-                      height=800)
-    
+                      height=800,
+                      custom_data=['id'])
+
+
+@app.callback(
+    Output('relayout-data', 'children'),
+    [Input('crossfilter-indicator-scatter', 'relayoutData'),
+    Input('crossfilter-indicator-scatter', 'hoverData'),
+    Input('crossfilter-indicator-scatter', 'clickData'),
+    Input('crossfilter-indicator-scatter', 'selectedData'),
+    Input('crossfilter-indicator-scatter', 'clickAnnotationData')
+    ])
+def display_relayout_data(relayoutData,hoverData,clickData,selectedData,clickAnnotationData):
+    ctx = dash.callback_context
+    print(ctx.states)
+    ctx_msg = json.dumps({
+    'states': ctx.states,
+    'triggered': ctx.triggered,
+    'inputs': ctx.inputs
+    }, indent=2)
+    print(ctx_msg)
+    data_dict = {}
+    data_dict['relayoutData'] = relayoutData
+    data_dict['hoverData'] = hoverData
+    data_dict['clickData'] = clickData    
+    if clickData:
+        clickdata_dict = clickData
+        index_from_clickdata = clickdata_dict['points'][0]['pointIndex']
+        row_from_df = df.loc[index_from_clickdata]
+        print(row_from_df)
+
+    data_dict['selectedData'] = selectedData
+    data_dict['clickAnnotationData'] = clickAnnotationData
+
+    return json.dumps(data_dict,indent=4)
 
 
 #endregion 

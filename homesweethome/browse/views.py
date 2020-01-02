@@ -22,17 +22,8 @@ class property_list(ListView):
     paginate_by = 20
     model = Home
 
-def testing_df(request):
 
-    qs = Home.objects.all()
 
-    df = read_frame(qs)
-
-    all_columns = list(df.columns.values.tolist())
-    all_columns.remove('id_from_website')
-    all_columns.remove('id')
-    print(all_columns)
-    df = pd.melt(df,'id',all_columns)
-    print(df)
-    return HttpResponse(df)
+def analytics(request):
+    return render(request,'browse/home_analytics.html')
 
