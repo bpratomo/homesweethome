@@ -7,6 +7,8 @@ import json
 from sqlalchemy import create_engine
 import pandas as pd 
 import plotly.express as px
+
+
 # Create sqlalchemy connection 
 engine = create_engine('postgresql://postgres:Teknikfisika123@localhost/homesweethome')
 

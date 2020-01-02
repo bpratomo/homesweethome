@@ -13,14 +13,15 @@ class Home(models.Model):
     area = models.FloatField()
     number_of_bedrooms = models.IntegerField()
     state_of_furnishing = models.TextField()
-    available_from = models.TextField()
-    offered_since = models.TextField()
+    available_from = models.DateTimeField()
+    offered_since = models.DateTimeField()
     energy_label = models.TextField(null=True)
     description_from_tenant = models.TextField()
     tenant_contact_information = models.TextField(default='')
     property_website_source = models.TextField(default='')
     property_source_url = models.TextField(default='')
-    region = models.TextField(default='')
+    city = models.TextField(default='')
+    type_of_property = models.TextField(default='')
     
 class Screenshot(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE)
