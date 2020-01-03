@@ -16,13 +16,9 @@
     -webkit-filter: blur(8px);
 
 }
-/* 
-#housingPlot{
-    width: 48%;
-    float: left;
-}
+
 
 #home_gallery{
-    width: 48%;
-    float: right;
-} */
+    overflow-y: scroll;
+    max-height: 800;
+} 

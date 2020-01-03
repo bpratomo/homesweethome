@@ -7,7 +7,7 @@
 <div  class="uk-height-max-large  uk-container uk-container-expand"   uk-height-viewport="min-height: 300" uk-grid>
     <!-- ANALYTICS -->
 
-    <div  class="uk-width-1-2" >
+    <div id='housingPlot' class="uk-width-1-2" >
     {%plotly_app name="housingPlot" ratio=0.8%}
     </div>
 
@@ -16,7 +16,7 @@
 
 
     <!-- GALLERY -->
-    <div id='home_gallery' class="uk-width-1-2 uk-responsive-width uk-height-max-large">
+    <div id='home_gallery' class="uk-width-1-2 uk-responsive-width" uk-height-match='#housingPlot'>
 
     </div>
 

@@ -63,8 +63,16 @@
             <div>
                 <div class="uk-card-body">
                     <h3 class="uk-card-title">{{ property.property_name }}</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+                    <p>{{property.description_from_tenant}}</p>
+                    <ul>
+                    <li>city = {{property.city}}</li>
+                    <li>price = {{property.price}}</li>
+                    <li>area = {{property.area}}</li>
+                    <li>energy label = {{property.energy_label}}</li>
+                    <li>offered_since = {{property.offered_since}}</li>
+                    <li>pararius link = <a href="{{property.property_source_url}}">{{property.property_source_url}}</a></li>
                     </p>
+                    </ul>
                 </div>
             </div>
             <!-- DESCRIPTION CARD -->
