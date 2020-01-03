@@ -1,17 +1,26 @@
 {% extends 'browse/base.html' %}
+{% load static %}
+
 
 
 {% block content %}
-
 <!-- ANALYTICS -->
 {% load plotly_dash %}
-{%plotly_app name="housingPlot" ratio=1%}
+{%plotly_app name="housingPlot" ratio=0.8%}
 <!-- ANALYTICS -->
 
 
+<!-- GALLERY -->
+<div id = 'home_gallery'>
+</div>
 
 
-
+<!-- GALLERY -->
 
 {% endblock content %}
 
+
+
+{% block additional_scripts %}
+<script src="{% static 'browse/event_to_list.js' %}"></script> 
+{% endblock additional_scripts %}

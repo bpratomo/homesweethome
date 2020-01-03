@@ -4,6 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from django_plotly_dash import DjangoDash
 import json
+
 from sqlalchemy import create_engine
 import pandas as pd 
 import plotly.express as px
@@ -38,10 +39,16 @@ available_indicators = long_df['variable'].unique()
 
 app.layout = html.Div([
     html.Div([
+        #Event containers
+        html.Div(id='relayout-data-event', style={'display': 'none'}),
+        html.Div(id='click-data-event', style={'display': 'none'}),
+        html.Div(id='selected-data-event', style={'display': 'none'}),
 
+        
+        # Filters
         html.Div([
             dcc.Dropdown(
-                id='crossfilter-xaxis-column',
+                id='xaxis-column',
                 options=[{'label': i, 'value': i} for i in available_indicators],
                 value='price'
             ),
@@ -50,7 +57,7 @@ app.layout = html.Div([
 
         html.Div([
             dcc.Dropdown(
-                id='crossfilter-yaxis-column',
+                id='yaxis-column',
                 options=[{'label': i, 'value': i} for i in available_indicators],
                 value='area'
             ),
@@ -59,7 +66,7 @@ app.layout = html.Div([
 
         html.Div([
             dcc.Dropdown(
-                id='crossfilter-color-by',
+                id='color-by',
                 options=[{'label': i, 'value': i} for i in available_indicators],
                 value='region'
             ),
@@ -72,31 +79,25 @@ app.layout = html.Div([
         'padding': '10px 5px'
     }),
 
+    # Graph
     html.Div([
         dcc.Graph(
-            id='crossfilter-indicator-scatter',
+            id='indicator-scatter',
         )
     ], style={'width': '98%','height':'200%', 'display': 'inline-block', 'padding': '0 20'}),
 
-    html.Div([
-            dcc.Markdown(d("""
-                **Zoom and Relayout Data**
 
-                Click and drag on the graph to zoom or click on the zoom
-                buttons in the graph's menu bar.
-                Clicking on legend items will also fire
-                this event.
-            """)),
-            html.Pre(id='relayout-data', style=styles['pre']),
-        ], className='three columns')
     ])
 
 
+
+
+# Graph update callback
 @app.callback(
-    dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
-    [dash.dependencies.Input('crossfilter-xaxis-column', 'value'),
-     dash.dependencies.Input('crossfilter-yaxis-column', 'value'),
-     dash.dependencies.Input('crossfilter-color-by', 'value'),
+    dash.dependencies.Output('indicator-scatter', 'figure'),
+    [dash.dependencies.Input('xaxis-column', 'value'),
+     dash.dependencies.Input('yaxis-column', 'value'),
+     dash.dependencies.Input('color-by', 'value'),
      ])
 def update_graph(xaxis_column_name, yaxis_column_name,color_by
                  ):
@@ -109,37 +110,36 @@ def update_graph(xaxis_column_name, yaxis_column_name,color_by
                       custom_data=['id'])
 
 
-@app.callback(
-    Output('relayout-data', 'children'),
-    [Input('crossfilter-indicator-scatter', 'relayoutData'),
-    Input('crossfilter-indicator-scatter', 'hoverData'),
-    Input('crossfilter-indicator-scatter', 'clickData'),
-    Input('crossfilter-indicator-scatter', 'selectedData'),
-    Input('crossfilter-indicator-scatter', 'clickAnnotationData')
-    ])
-def display_relayout_data(relayoutData,hoverData,clickData,selectedData,clickAnnotationData):
-    ctx = dash.callback_context
-    print(ctx.states)
-    ctx_msg = json.dumps({
-    'states': ctx.states,
-    'triggered': ctx.triggered,
-    'inputs': ctx.inputs
-    }, indent=2)
-    print(ctx_msg)
-    data_dict = {}
-    data_dict['relayoutData'] = relayoutData
-    data_dict['hoverData'] = hoverData
-    data_dict['clickData'] = clickData    
-    if clickData:
-        clickdata_dict = clickData
-        index_from_clickdata = clickdata_dict['points'][0]['pointIndex']
-        row_from_df = df.loc[index_from_clickdata]
-        print(row_from_df)
 
-    data_dict['selectedData'] = selectedData
-    data_dict['clickAnnotationData'] = clickAnnotationData
 
-    return json.dumps(data_dict,indent=4)
+
+
+
+
+# Event data functions
+
+@app.callback( 
+Output('relayout-data-event', 'children'),
+[Input('indicator-scatter', 'relayoutData'),]
+)
+def save_relayout_data(relayoutData):
+    return json.dumps(relayoutData)
+
+
+@app.callback( 
+Output('click-data-event', 'children'),
+[Input('indicator-scatter', 'clickData'),]
+)
+def save_click_data(clickData):
+    return json.dumps(clickData)
+
+@app.callback( 
+Output('selected-data-event', 'children'),
+[Input('indicator-scatter', 'selectedData'),]
+)
+def save_selected_data(selectedData):
+    return json.dumps(selectedData)
+
 
 
 #endregion 
