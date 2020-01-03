@@ -36,8 +36,11 @@ afterLoading = function(){
             console.log(mutationsList);
             var payload = {
                 "event_type":'relayout',
+                "xvar":'price',
+                "yvar":'area',
                 "event_data":relayoutEventDiv.innerHTML
             };
+            update_gallery(payload);
             console.log(payload)
         };
 
@@ -47,6 +50,8 @@ afterLoading = function(){
                 "event_type":'click',
                 "event_data":clickEventDiv.innerHTML
             };
+
+            update_gallery(payload);
             console.log(payload)
         };
 
@@ -55,8 +60,9 @@ afterLoading = function(){
             console.log(mutationsList);
             var payload = {
                 "event_type":'select',
-                "event_data":clickEventDiv.innerHTML
+                "event_data":selectEventDiv.innerHTML
             };
+            update_gallery(payload);
             console.log(payload);
         };
 

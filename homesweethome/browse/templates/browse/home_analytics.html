@@ -1,26 +1,43 @@
 {% extends 'browse/base.html' %}
 {% load static %}
-
+{% load plotly_dash %}
 
 
 {% block content %}
-<!-- ANALYTICS -->
-{% load plotly_dash %}
-{%plotly_app name="housingPlot" ratio=0.8%}
-<!-- ANALYTICS -->
+<div  class="uk-height-max-large  uk-container uk-container-expand"   uk-height-viewport="min-height: 300" uk-grid>
+    <!-- ANALYTICS -->
+
+    <div  class="uk-width-1-2" >
+    {%plotly_app name="housingPlot" ratio=0.8%}
+    </div>
 
 
-<!-- GALLERY -->
-<div id = 'home_gallery'>
+    <!-- ANALYTICS -->
+
+
+    <!-- GALLERY -->
+    <div id='home_gallery' class="uk-width-1-2 uk-responsive-width uk-height-max-large">
+
+    </div>
+
+    <!-- GALLERY -->
+
 </div>
-
-
-<!-- GALLERY -->
 
 {% endblock content %}
 
 
 
 {% block additional_scripts %}
-<script src="{% static 'browse/event_to_list.js' %}"></script> 
+<script>
+    function update_gallery(payload) {
+        $('#home_gallery').html('').load(
+            "{% url 'property_list_from_event_ajax' %}", payload
+        )
+    }
+</script>
+
+
+
+<script src="{% static 'browse/event_to_list.js' %}"></script>
 {% endblock additional_scripts %}
