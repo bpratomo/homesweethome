@@ -1,6 +1,17 @@
 {% extends 'browse/base.html' %}
 
+
+{% block content %}
+
 <!-- ANALYTICS -->
-{%plotly_app name="housingPlot" ratio=2%}
+{% load plotly_dash %}
+{%plotly_app name="housingPlot" ratio=1%}
 <!-- ANALYTICS -->
+
+
+
+
+
+
+{% endblock content %}
 
