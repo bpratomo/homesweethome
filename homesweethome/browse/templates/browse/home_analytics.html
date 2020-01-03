@@ -1,12 +1,6 @@
-{% load static %}
-{% load plotly_dash %}
-{% load plotly_dash %}
+{% extends 'browse/base.html' %}
 
-<style>
-div {
-    height:100%
-}
-</style>
-
+<!-- ANALYTICS -->
 {%plotly_app name="housingPlot" ratio=2%}
+<!-- ANALYTICS -->
 
