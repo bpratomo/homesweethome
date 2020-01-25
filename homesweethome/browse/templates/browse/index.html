@@ -79,7 +79,17 @@
 
 </div>
 
+<script>
+    function update_gallery(payload) {
+        $('#home_gallery').html('').load(
+            "{% url 'property_list_from_event_ajax' %}", payload
+        )
+    }
+</script>
 
+
+
+<script src="{% static 'browse/event_to_list.js' %}"></script>
 
 
 

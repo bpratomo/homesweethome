@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bulma": "^0.8.0",
     "uikit": "^3.2.6"
   }
 }
