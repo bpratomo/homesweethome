@@ -27,7 +27,16 @@ object-fit: cover;
 object-position: 0% 110%;
 }
 
-#home_gallery{
+#listings{
     overflow-y: scroll;
     max-height: 800;
 } 
+
+#content{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#content-4x3 {
+    padding-top: 75%;
+  }
