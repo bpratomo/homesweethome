@@ -2,7 +2,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-from django_plotly_dash import DjangoDash
+
 import json
 
 from sqlalchemy import create_engine
@@ -23,7 +23,7 @@ long_df = pd.melt(df,'id',all_columns)
 
 
 #region dashapp
-app = DjangoDash('housingPlot')
+app = dash.Dash('housingPlot')
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -143,3 +143,7 @@ def save_selected_data(selectedData):
 
 
 #endregion 
+
+
+if __name__ == "__main__":
+    app.run_server(debug=True)

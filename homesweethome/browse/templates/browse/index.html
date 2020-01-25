@@ -1,6 +1,6 @@
 {% include "browse/shared/imports_and_style.html" %}
 {% load static %}
-{% load plotly_dash %}
+
 
 <div class="uk-position-relative">
     <img src="{% static 'browse/img/house.jpg' %}" class="full-width">
@@ -65,7 +65,7 @@
     <div id='housingPlot' class="uk-width-1-2@l uk-width-1-1@m">
         <h1 class="uk-heading-medium">Scatterplot</h1>
         <hr>
-        {%plotly_app name="housingPlot" ratio=0.8%}
+        <iframe src="http://127.0.0.1:8050/" class='uk-width-1-1 uk-height-1-1'></iframe>
         <hr class="uk-divider-vertical" style="display:inline">
     </div>
 

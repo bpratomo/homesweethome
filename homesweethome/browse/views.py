@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from browse.models import Home
-from .dashapp import app
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django_pandas.io import read_frame
 import pandas as pd 
