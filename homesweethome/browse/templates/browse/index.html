@@ -59,14 +59,11 @@
 
 
 
-<div class="uk-height-max-large  uk-container uk-container-expand " id='content' uk-height-viewport="min-height: 300">
+<div  class="uk-height-max-large  uk-container uk-container-expand" id = 'content'  uk-height-viewport="min-height: 300" uk-grid>
     <!-- ANALYTICS -->
 
-    <div id='housingPlot' class="uk-width-1-2@l uk-width-1-1@m">
-        <h1 class="uk-heading-medium">Scatterplot</h1>
-        <hr>
-        {%plotly_app name="housingPlot" ratio=0.8%}
-        <hr class="uk-divider-vertical" style="display:inline">
+    <div id='housingPlot' class="uk-width-1-2" >
+    {%plotly_app name="housingPlot" ratio=0.8%}
     </div>
 
 
@@ -74,29 +71,19 @@
 
 
     <!-- GALLERY -->
-    <div id='home_gallery' class="uk-width-1-2@l uk-width-1-1@m" uk-height-match='#housingPlot'>
-        <h1 class="uk-heading-medium">Gallery</h1>
-        <hr>
-        <div id ='placeholder' class="uk-card uk-card-body">
-            <h3 class="uk-card-title">Select some datapoints in the scatterplot to start</h3>
-        </div>
+    <div id='home_gallery' class="uk-width-1-2 uk-responsive-width" uk-height-match='#housingPlot'>
 
-
-        <div id='listings'></div>
     </div>
 
-<div id='counter' style='display:none'>0</div>
     <!-- GALLERY -->
 
 </div>
 
 <script>
     function update_gallery(payload) {
-
-        $('#listings').html('').load(
+        $('#home_gallery').html('').load(
             "{% url 'property_list_from_event_ajax' %}", payload
         )
-
     }
 </script>
 
@@ -114,4 +101,4 @@
 
 
 
-{% include "browse/shared/scripts.html" %}
+    {% include "browse/shared/scripts.html" %}
