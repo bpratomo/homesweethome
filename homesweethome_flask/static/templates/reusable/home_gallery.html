@@ -1,0 +1,110 @@
+
+<!-- CONTENT -->
+
+<div class='uk-section uk-dark uk-flex uk-flex-column'>
+    <!-- Pagination -->
+    <div class="uk-container">
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                <a href="/list?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                <a href="/list?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+    </div>
+    <!-- Pagination -->
+
+    {% for property in object_list %}
+    <div class='uk-container uk-margin'>
+
+        <div class="uk-card uk-card-hover uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+            <!-- MEDIA CARD -->
+            <div class="uk-card-media-left uk-cover-container">
+                <div class='uk-position-relative uk-dark' tabindex="-1" uk-slider="center: true">
+                    <ul class="uk-slider-items uk-grid">
+                        {% for screenshot in property.screenshot_set.all %}
+                        {% if screenshot%}
+                        <li class="uk-width-3-4">
+                            <div class="uk-panel">
+                                <img src="{{ screenshot.link}}" alt="">
+                            </div>
+                        </li>
+                        {% else %}
+                        <li class="uk-width-3-4">
+                            <div class="uk-panel">
+                                <p>Image not available
+                                </p>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <a class="uk-position-center-left uk-position-medium" href="#" uk-slidenav-previous
+                        uk-slider-item="previous"></a>
+                    <a class="uk-position-center-right uk-position-medium" href="#" uk-slidenav-next
+                        uk-slider-item="next"></a>
+                </div>
+
+            </div>
+            <!-- MEDIA CARD -->
+
+
+
+
+            <!-- DESCRIPTION CARD -->
+            <div>
+                <div class="uk-card-body">
+                    <h3 class="uk-card-title">{{ property.property_name }}</h3>
+                    <p>{{property.description_from_tenant}}</p>
+                    <ul>
+                    <li>city = {{property.city}}</li>
+                    <li>price = {{property.price}}</li>
+                    <li>area = {{property.area}}</li>
+                    <li>energy label = {{property.energy_label}}</li>
+                    <li>offered_since = {{property.offered_since}}</li>
+                    <li>pararius link = <a href="{{property.property_source_url}}">{{property.property_source_url}}</a></li>
+                    </p>
+                    </ul>
+                </div>
+            </div>
+            <!-- DESCRIPTION CARD -->
+
+        </div>
+
+    </div>
+    {% endfor %}
+
+    <!-- CONTENT -->
+
+
+    <!-- Pagination -->
+    <div class="uk-container">
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                <a href="/list?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                <a href="/list?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+    </div>
+    <!-- Pagination -->
+
+</div>
+
+

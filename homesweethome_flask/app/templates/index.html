@@ -1,9 +1,10 @@
-{% include "browse/shared/imports_and_style.html" %}
-{% load static %}
+
+<link rel="stylesheet" href="static/uikit.min.css">
+<link rel="stylesheet" href="static/browse.css">
 
 
 <div class="uk-position-relative">
-    <img src="{% static 'browse/img/house.jpg' %}" class="full-width">
+    <img src="/static/house.jpg" class="full-width">
 
     <div class='uk-overlay'>
         <div class='uk-position-top'>
@@ -96,18 +97,16 @@
     function update_gallery(payload) {
 
         $('#listings').html('').load(
-            "{% url 'property_list_from_event_ajax' %}", payload
+            "{{ url_for('property_list_from_event_ajax',variable=payload)}}", payload
         )
 
     }
 </script>
 
 
-
-<script src="{% static 'browse/event_to_list.js' %}"></script>
-
-
-
+<script src="static/uikit.min.js"></script> 
+<script src="static/jquery.js"></script> 
+<script src="scripts/event_to_list.js"></script> 
 
 
 
@@ -116,4 +115,6 @@
 
 
 
-{% include "browse/shared/scripts.html" %}
+
+
+

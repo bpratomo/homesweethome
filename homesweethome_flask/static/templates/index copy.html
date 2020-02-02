@@ -1,0 +1,70 @@
+{% extends 'browse/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- COVER -->
+<div class="uk-cover-container uk-flex uk-flex-middle top-wrap-height uk-light ">
+    <div class="uk-container uk-flex-auto top-container uk-position-relative uk-margin-medium-top"
+         style="transform: translateY(0px); opacity: 1;">
+        <div class="uk-width-1-2@s" data-uk-scrollspy="cls: uk-animation-slide-right-medium; target: > *; delay: 150">
+            <h6 class="uk-text-primary uk-margin-small-bottom uk-scrollspy-inview uk-animation-slide-right-medium"
+                style="">RESEARCH</h6>
+            <h1 class="uk-margin-remove-top uk-scrollspy-inview uk-animation-slide-right-medium" style="">Innovation in
+                your hands.</h1>
+            <p class="subtitle-text uk-visible@s uk-scrollspy-inview uk-animation-slide-right-medium" style="">Tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco </p>
+            <a href="#" title="Learn More"
+                class="uk-button uk-button-primary uk-border-pill uk-scrollspy-inview uk-animation-fade"
+                data-uk-scrollspy-class="uk-animation-fade" style="">LEARN MORE</a>
+        </div>
+    </div>
+
+
+
+    <img src="{% static 'browse/img/house.jpg' %}" data-sizes="100vw" alt="" data-uk-cover="" data-uk-img="" class="uk-cover bg-image" style="height: 784px; width: 1568px; opacity: 1;" sizes="100vw">
+</div>
+<!-- COVER -->
+
+
+
+<!-- CONTENT -->
+<div class= 'uk-section uk-dark '>
+    <div class = 'uk-container'>
+    <div class= 'uk-child-width-expand@s uk-text-center ' uk-grid>
+    
+    <!-- CARD 1 -->
+    <div class = 'uk-transition-toggle'>
+        <div class="uk-card uk-card-default uk-transition-scale-up uk-transition-opaque">
+            <div class="uk-card-media-top">
+                <img class = 'uk-height-max-large  ' src="{% static 'browse/img/computer.jpg' %}" alt="">
+            </div>
+            <div class="uk-card-body">
+                <h3 class="uk-card-title">Media Top</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+            </div>
+        </div>
+    </div>
+    <!-- CARD 1 -->
+
+    <!-- CARD 2 -->
+    <div class = 'uk-transition-toggle'>
+        <div class="uk-card uk-card-default uk-transition-scale-up uk-transition-opaque">
+            <div class="uk-card-media-top ">
+                <img class = 'uk-height-max-large' src="{% static 'browse/img/analytics.jpg' %}" alt="">
+            </div>
+            <div class="uk-card-body">
+                <h3 class="uk-card-title">Media Top</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+            </div>
+        </div>
+    </div>
+    <!-- CARD 2 -->
+
+    </div>
+    </div>
+</div>
+<!-- CONTENT -->
+
+{% endblock content %}

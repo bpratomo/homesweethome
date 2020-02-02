@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output
 from flask_cors import CORS
 import json
 import redis
+from app import app
 
 from sqlalchemy import create_engine
 import pandas as pd 
@@ -25,9 +26,9 @@ long_df = pd.melt(df,'id',all_columns)
 
 
 #region dashapp
-app = dash.Dash('housingPlot')
-CORS(app)
-
+dashapp = dash.Dash(__name__,
+    server=app,
+    routes_pathname_prefix='/dash/')
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 styles = {
@@ -40,7 +41,7 @@ styles = {
 
 available_indicators = long_df['variable'].unique()
 
-app.layout = html.Div([
+dashapp.layout = html.Div([
     html.Div([
         #Event containers
         html.Div(id='relayout-data-event', style={'display': 'none'}),
@@ -96,7 +97,7 @@ app.layout = html.Div([
 
 
 # Graph update callback
-@app.callback(
+@dashapp.callback(
     dash.dependencies.Output('indicator-scatter', 'figure'),
     [dash.dependencies.Input('xaxis-column', 'value'),
      dash.dependencies.Input('yaxis-column', 'value'),
@@ -121,7 +122,7 @@ def update_graph(xaxis_column_name, yaxis_column_name,color_by
 
 # Event data functions
 
-@app.callback( 
+@dashapp.callback( 
 Output('relayout-data-event', 'children'),
 [Input('indicator-scatter', 'relayoutData'),]
 )
@@ -129,14 +130,14 @@ def save_relayout_data(relayoutData):
     return json.dumps(relayoutData)
 
 
-@app.callback( 
+@dashapp.callback( 
 Output('click-data-event', 'children'),
 [Input('indicator-scatter', 'clickData'),]
 )
 def save_click_data(clickData):
     return json.dumps(clickData)
 
-@app.callback( 
+@dashapp.callback( 
 Output('selected-data-event', 'children'),
 [Input('indicator-scatter', 'selectedData'),]
 )
@@ -188,14 +189,5 @@ class SessionStore(object):
         session_data = self.encode(self._get_session(no_load=must_create))
         self._conn.save(session_key,expire_in, session_data, must_create)
 
-        
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    dashapp.run_server(debug=True)

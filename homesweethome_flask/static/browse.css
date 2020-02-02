@@ -1,0 +1,42 @@
+.top-wrap-height {
+    height: 60vh;
+    min-height: 460px;
+    transition: height 0.25s;
+}
+
+.top-container {
+    z-index: 2;
+}
+
+.bg-image {
+
+
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+
+    ;
+
+}
+
+
+.full-width {
+width:  100%;
+max-height: 45vw;
+object-fit: cover;
+object-position: 0% 110%;
+}
+
+#listings{
+    overflow-y: scroll;
+    max-height: 800;
+} 
+
+#content{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#content-4x3 {
+    padding-top: 75%;
+  }
