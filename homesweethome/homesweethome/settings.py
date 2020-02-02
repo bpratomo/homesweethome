@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'browse.apps.BrowseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -125,3 +127,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:8050"
+]
+
+SESSION_ENGINE = 'redis_sessions_fork.session'

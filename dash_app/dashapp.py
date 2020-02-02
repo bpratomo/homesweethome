@@ -2,14 +2,16 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-
+from flask_cors import CORS
 import json
+import redis
 
 from sqlalchemy import create_engine
 import pandas as pd 
 import plotly.express as px
 from textwrap import dedent as d
 
+import base64
 
 # Create sqlalchemy connection 
 engine = create_engine('postgresql://postgres:Teknikfisika123@localhost/homesweethome')
@@ -24,6 +26,7 @@ long_df = pd.melt(df,'id',all_columns)
 
 #region dashapp
 app = dash.Dash('housingPlot')
+CORS(app)
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -143,6 +146,55 @@ def save_selected_data(selectedData):
 
 
 #endregion 
+
+
+class SessionStore(object):
+    # The default serializer, for now
+    def __init__(self, conn, session_key, secret, serializer=None):
+
+        self._conn = conn
+        self.session_key = session_key
+        self._secret = secret
+        self.serializer = serializer or JSONSerializer
+        self.hash, self.decoded_data = self.load()
+
+
+    def load(self):
+        session_data = self._conn.get(self.session_key)
+        
+        if not session_data is None:
+            return self._decode(session_data)
+        
+        else:
+            return {}
+
+
+    def _decode(self, session_data):
+        encoded_data = base64.b64decode(force_bytes(session_data))
+        try:
+
+            hash, serialized = encoded_data.split(b':',1)
+            return hash, self.serializer().loads(serialized)
+        
+        except Exception as e:
+            return {}
+
+
+    def _encode(self, session_data):
+        serialized = self.serializer().dumps(session_data)
+ 
+
+    def save(self):
+        session_data = self.encode(self._get_session(no_load=must_create))
+        self._conn.save(session_key,expire_in, session_data, must_create)
+
+        
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

@@ -1,4 +1,7 @@
 from django.db import models
+import redis
+
+r = redis.Redis()
 
 # Create your models here.
 

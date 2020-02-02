@@ -4,9 +4,9 @@ var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
 
 function checkIframeLoaded() {
     // Get a handle to the iframe element
-    
+    // console.log('we are trying to check iframe loading status')
     var relayoutEventDiv  = innerDoc.getElementById('relayout-data-event');
-
+    // console.log(relayoutEventDiv)
     // Check if loading is complete
     if (relayoutEventDiv) {
         afterLoading();
